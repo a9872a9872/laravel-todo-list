@@ -15,7 +15,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        return Item::orderBy('created_at', 'DESC')->get();
+        return json_encode(Item::orderBy('created_at', 'ASC')->get());
     }
 
     /**
@@ -76,8 +76,9 @@ class ItemController extends Controller
     {
         $existingItem = Item::find($id);
         if ($existingItem) {
-            $existingItem->completed = $request->completed ? true : false;
-            $existingItem->completed_at = $request->completed ? Carbon::now() : null;
+            $existingItem->completed = $request->completed == "true" ? true : false;
+            $existingItem->completed_at = $request->completed == "true" ? Carbon::now() : null;
+            $existingItem->save();
             return $existingItem;
         }
 
